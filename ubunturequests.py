@@ -4,6 +4,7 @@ import hashlib
 from urllib.parse import urlparse
 import pkg_resources  # To fetch installed version
 
+
 def get_file_hash(filepath):
     """Generate a SHA256 hash of the file to detect duplicates."""
     hasher = hashlib.sha256()
@@ -12,6 +13,7 @@ def get_file_hash(filepath):
             hasher.update(chunk)
     return hasher.hexdigest()
 
+
 def download_image(url, save_dir, existing_hashes):
     """Download a single image with error handling and duplicate prevention."""
     try:
@@ -19,7 +21,7 @@ def download_image(url, save_dir, existing_hashes):
         response = requests.get(url, timeout=10)
         response.raise_for_status()
 
-        # Check content type
+        # Check content type and size
         content_type = response.headers.get("Content-Type", "")
         content_length = response.headers.get("Content-Length", "")
 
@@ -72,6 +74,7 @@ def download_image(url, save_dir, existing_hashes):
         print(f"✗ An unexpected error occurred for {url}: {e}")
     return None
 
+
 def create_requirements_file():
     """Create requirements.txt with the exact requests version installed."""
     try:
@@ -81,6 +84,7 @@ def create_requirements_file():
         print(f"\n📄 requirements.txt created with requests=={version}")
     except Exception as e:
         print(f"✗ Could not create requirements.txt: {e}")
+
 
 def main():
     print("🌍 Welcome to the Ubuntu Image Fetcher")
@@ -108,6 +112,7 @@ def main():
 
     print("\n✅ Connection strengthened. Community enriched.")
     print("✨ Respecting safety, sharing resources mindfully, and serving a real need.")
+
 
 if __name__ == "__main__":
     main()
