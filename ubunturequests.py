@@ -33,16 +33,16 @@ def download_image(url, save_dir, existing_hashes):
             print(f"✗ Skipping {url} (file too large: {int(content_length)/1_000_000:.2f} MB)")
             return None
 
-        # Extract filename or generate default
+        # Extract filename or generate default #
         parsed_url = urlparse(url)
         filename = os.path.basename(parsed_url.path) or "downloaded_image.jpg"
         filepath = os.path.join(save_dir, filename)
 
-        # Handle duplicate filenames by renaming
+        # Handle duplicate filenames by renaming #
         base, ext = os.path.splitext(filename)
         counter = 1
         while os.path.exists(filepath):
-            # Compare hash to detect actual duplicates
+            # Compare hash to detect actual duplicates #
             if get_file_hash(filepath) == hashlib.sha256(response.content).hexdigest():
                 print(f"⚠ Duplicate skipped: {filename}")
                 return None
@@ -50,11 +50,11 @@ def download_image(url, save_dir, existing_hashes):
             filepath = os.path.join(save_dir, filename)
             counter += 1
 
-        # Save image in binary mode
+        # Save image in binary mode #
         with open(filepath, "wb") as f:
             f.write(response.content)
 
-        # Store hash to prevent future duplicates
+        # Store hash to prevent future duplicates #
         file_hash = get_file_hash(filepath)
         existing_hashes.add(file_hash)
 
@@ -90,7 +90,7 @@ def main():
     print("🌍 Welcome to the Ubuntu Image Fetcher")
     print("🤝 A tool for mindfully collecting images from the web\n")
 
-    # Get multiple URLs from user
+    # Get multiple URLs from user #
     urls = input("Please enter image URLs (separated by commas): ").split(",")
     urls = [u.strip() for u in urls if u.strip()]
 
@@ -98,7 +98,7 @@ def main():
         print("✗ No URLs provided. Exiting.")
         return
 
-    # Create directory for images
+    # Create directory for images #
     save_dir = "Fetched_Images"
     os.makedirs(save_dir, exist_ok=True)
 
@@ -107,7 +107,7 @@ def main():
     for url in urls:
         download_image(url, save_dir, existing_hashes)
 
-    # Create requirements.txt
+    # Create requirements.txt #
     create_requirements_file()
 
     print("\n✅ Connection strengthened. Community enriched.")
